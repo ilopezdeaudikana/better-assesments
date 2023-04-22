@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { Tree, Radio, RadioChangeEvent } from 'antd';
 import { PostsState, Post } from '../common/types/post';
 import {
-  fetchTodosAction,
+  fetchPostsAction,
 } from '../store/actions/actions';
 import { RootState } from '../store/store';
 import { changeGroups } from '../store/group-by.service';
@@ -87,7 +87,7 @@ export const Posts = () => {
       dispatch(setPosts(posts));
     }
   useEffect(() => {
-    dispatch(fetchTodosAction());
+    dispatch(fetchPostsAction());
   }, [dispatch]);
 
 

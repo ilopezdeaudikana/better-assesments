@@ -4,7 +4,7 @@ import { groupPostsByWeek } from '../group-by.service';
 import { fetchSucceded } from '../../posts/posts.slice';
 
 export const api = {
-  getTodos() {
+  getPosts() {
     return fetch('http://localhost:3001/api')
       .then((response) => response.json())
       .then((response) => {
@@ -20,9 +20,9 @@ export const api = {
 export const POSTS_FETCH_REQUESTED = 'POSTS_FETCH_REQUESTED';
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* fetchTodos() {
+function* fetchPosts() {
   try {
-    const posts: Post[] = yield call(api.getTodos);
+    const posts: Post[] = yield call(api.getPosts);
     yield put(fetchSucceded(posts));
   } catch (e: any) {
     console.log(e);
@@ -35,7 +35,7 @@ function* fetchTodos() {
   Allows concurrent fetches of user.
 */
 function* postsSaga() {
-  yield takeLatest(POSTS_FETCH_REQUESTED, fetchTodos);
+  yield takeLatest(POSTS_FETCH_REQUESTED, fetchPosts);
 }
 
 export default postsSaga;

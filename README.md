@@ -1,8 +1,13 @@
-# Getting Started with Create React App
+# Two tech assesments combined
+This app was created using React, Express, Typescript, React hooks, Redux, Sagas, Antd and Styled components and tested using Jest.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
 
 ## Available Scripts
+
+In the `server` directory, you can run:
+
+### `npm start`
+
 
 In the project directory, you can run:
 
