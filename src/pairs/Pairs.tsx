@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import { getPartners } from '../common/services/api.service'
-import { groupPartnersByCountry } from '../common/services/process.service'
+import { groupPartnersByCountry, generateResultsPerCountry } from '../common/services/pairs.service'
 import { Country } from '../common/types/country'
 import { Partner } from '../common/types/partner'
 import styled from 'styled-components'
@@ -21,40 +21,7 @@ export const Pairs = () => {
           items.partners
         )
 
-        const resultsPerCountry = Object.entries(countries).map(
-          ([country, partners]) => {
-            const startDates = partners.reduce(
-              (accummulator, current) =>
-                accummulator.concat(current.startDates ?? []),
-              [] as string[]
-            )
-            const datesOcurrence = startDates.reduce((acc, curr) => {
-              const ocurrence: number = acc[curr]
-              acc[curr] = ocurrence ? ocurrence + 1 : 1
-              return acc
-            }, {} as Record<string, number>)
-
-            const startDate = Object.keys(datesOcurrence).reduce((a, b) =>
-              datesOcurrence[b] > datesOcurrence[a] ? b : a
-            )
-
-            const attendees: string[] = partners.reduce(
-              (accumulator, partner) => {
-                if (partner.startDates?.includes(startDate)) {
-                  accumulator.push(partner.email)
-                }
-                return accumulator
-              },
-              [] as string[]
-            )
-            return {
-              name: country,
-              attendeeCount: attendees.length,
-              attendees,
-              startDate
-            }
-          }
-        )
+        const resultsPerCountry: Country[] = generateResultsPerCountry(countries)
         setData({ countries: resultsPerCountry })
       })
       .catch((err) => {})

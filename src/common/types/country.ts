@@ -2,5 +2,5 @@ export interface Country {
   attendeeCount: number;
   attendees: string[];
   name: string;
-  startDate: string;
+  startDate: string | null;
 }
