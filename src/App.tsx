@@ -2,7 +2,6 @@ import React from 'react';
 import logo from './logo.svg';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Counter } from './counter/Counter';
 import { Pairs } from './pairs/Pairs';
 import { Posts } from './posts/Posts';
 
@@ -27,10 +26,7 @@ function App() {
             <nav>
               <ul>
                 <li>
-                  <Link to='/'>Home</Link>
-                </li>
-                <li>
-                  <Link to='/pairs'>Pairs</Link>
+                  <Link to='/'>Pairs</Link>
                 </li>
                 <li>
                   <Link to='/posts'>Posts</Link>
@@ -40,8 +36,7 @@ function App() {
           </header>
           <Wrapper>
             <Routes>
-              <Route path='/' element={<Counter/>} />
-              <Route path='/pairs' element={<Pairs/>} />
+              <Route path='/' element={<Pairs/>} />
               <Route path='/posts' element={<Posts/>} />
               {/* <Route element={Four04Page} />*/}
             </Routes>

@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { Post } from '../../common/types/post';
 import { groupPostsByWeek } from '../group-by.service';
-import { fetchSucceded } from '../../posts/posts.slice';
+import { setPosts } from '../../posts/posts.slice';
 
 export const api = {
   getPosts() {
@@ -22,8 +22,8 @@ export const POSTS_FETCH_REQUESTED = 'POSTS_FETCH_REQUESTED';
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* fetchPosts() {
   try {
-    const posts: Post[] = yield call(api.getPosts);
-    yield put(fetchSucceded(posts));
+    const posts: Record<string, Post[]> = yield call(api.getPosts);
+    yield put(setPosts(posts));
   } catch (e: any) {
     console.log(e);
     yield put({ type: 'POSTS_FETCH_FAILED', message: e.message });
