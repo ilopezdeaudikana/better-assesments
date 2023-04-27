@@ -5,13 +5,13 @@ import { store } from './store/store'
 import App from './App'
 
 describe('App component', () => {
-  it('renders learn react link', () => {
+  it('renders posts link', async () => {
     render(
       <Provider store={store}>
         <App />
       </Provider>
     )
-
-    expect(screen.getByText(/home/i)).toBeInTheDocument()
+    const link = await screen.findByText(/posts/i)
+    expect(link).toBeInTheDocument()
   })
 })
