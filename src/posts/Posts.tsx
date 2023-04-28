@@ -1,37 +1,18 @@
-import { Fragment, useEffect, useState } from 'react'
-import { Tree, Radio, RadioChangeEvent } from 'antd'
+import { ChangeEvent, Fragment, useEffect, useState } from 'react'
 import { PostsState, Post } from '../common/types/post'
 import { fetchPostsAction } from '../store/actions/actions'
 import { RootState } from '../store/store'
 import { changeGroups } from '../store/group-by.service'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { setInputValue, setPosts } from './posts.slice'
-import { useTree } from './useTree'
-
+import { setPosts } from './posts.slice'
+import { Tree } from './Tree'
+import { GroupButton } from './GroupButton'
 
 export const Posts = () => {
   const [group, setGroup] = useState('time')
 
   const posts: PostsState = useAppSelector((state: RootState) => state.posts)
   const dispatch = useAppDispatch()
-
-  const onSubmit = (
-    key: string,
-    input: string,
-    id: number,
-    value: string,
-    group: string
-  ) => {
-    dispatch(
-      setInputValue({
-        key,
-        input,
-        id,
-        value,
-        group
-      })
-    )
-  }
 
   const groupBy = (key: string, list: Record<string, Post[]>) => {
     const posts: Record<string, Post[]> = changeGroups(list, key)
@@ -41,25 +22,22 @@ export const Posts = () => {
     dispatch(fetchPostsAction())
   }, [dispatch])
 
-  
-  const [treeNodes] = useTree(onSubmit, group)
-
-  console.log('new refresh', posts.list) 
-
-  const onChange = (e: RadioChangeEvent) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setGroup(e.target.value)
     groupBy(e.target.value, posts.list)
   }
 
   return (
     <Fragment>
-      <Radio.Group onChange={onChange} value={group}>
-        <Radio value={'author'}>By Author</Radio>
-        <Radio value={'location'}>By Location</Radio>
-        <Radio value={'time'}>By Week</Radio>
-      </Radio.Group>
-      
-      <Tree checkable treeData={(treeNodes as any).current as any} />
+      <div
+        className='grid w-[30rem] grid-cols-3 space-x-2 rounded-xl bg-gray-200 p-2 mx-auto my-2'
+      >
+        <GroupButton group={group} by='time' change={onChange} />
+        <GroupButton group={group} by='location' change={onChange} />
+        <GroupButton group={group} by='author' change={onChange} />
+      </div>
+
+      <Tree group={group} />
     </Fragment>
   )
 }
