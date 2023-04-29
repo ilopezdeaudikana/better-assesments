@@ -1,5 +1,5 @@
 # Two tech assesments combined
-This app was created using React, Express, Typescript, React hooks, Redux, Sagas, Antd and Styled components and tested using Jest.
+This app was created using `React`, `Express`, `Typescript`, `Redux`, `Sagas`, styled with `Tailwind` and tested using `Jest`.
 
 
 ## Available Scripts
