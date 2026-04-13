@@ -1,27 +1,35 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga'
-import postReducer from '../posts/posts.slice'
-import postsSaga from './sagas/posts.saga';
+import { create } from 'zustand'
+import { Post } from '../common/types/post'
+import { groupPostsBy } from './group-by.service'
 
-const sagaMiddleware = createSagaMiddleware();
+interface DomAction {
+  key: string
+  input: string
+  id: number
+  value: string
+  group: string
+}
 
-export const store = configureStore({
-  reducer: {
-    posts: postReducer
-  },
-  middleware: (getDefaultMiddleware) => {
-    // Normally will disable thunks { thunk: false }
-    return getDefaultMiddleware().prepend(sagaMiddleware);
-  }
-});
-
-sagaMiddleware.run(postsSaga);
-
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
+interface PostStore {
+  posts: Record<string, Post[]>,
+  setPosts: (payload: Record<string, Post[]>) => void,
+  setInputValue: (payload: DomAction) => void
+}
+export const usePosts = create<PostStore>((set) => ({
+  posts: {} as Record<string, Post[]>,
+  setPosts: (payload: Record<string, Post[]>) => set(() => ({ posts: payload })),
+  setInputValue: (payload: DomAction) => set((state: PostStore) => {
+    const newList: Record<string, Post[]> = { ...state.posts }
+    const { key, id, input, value, group } = payload
+    const post: Post | undefined = newList[key].find((item) => item.id === id)
+    const posts = Object.keys(newList).reduce<Post[]>((acc, key) => acc.concat(newList[key]), []).filter(item => item.id !== id)
+    if (post) {
+      post[input] = value
+      posts.push(post)
+      groupPostsBy(posts, group)
+      return { posts: { ...groupPostsBy(posts, group) } }
+    } else {
+      return state.posts
+    }
+  }),
+}))

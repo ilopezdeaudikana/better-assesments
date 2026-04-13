@@ -1,0 +1,19 @@
+.showForm {
+  margin-bottom: 15px;
+}
+
+.addPost {
+  display: flex;
+  flex-direction: column;
+  align-content: space-evenly;
+  width: 450px;
+  margin-bottom: 15px;
+  height: 160px;
+  .item {
+    margin-bottom: 12px;
+    min-height: 50px;
+  }
+  .saveButton {
+    width: 120px;
+  }
+}

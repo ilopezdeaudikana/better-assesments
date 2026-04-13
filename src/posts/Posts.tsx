@@ -1,30 +1,28 @@
 import { ChangeEvent, Fragment, useEffect, useState } from 'react'
-import { PostsState, Post } from '../common/types/post'
-import { fetchPostsAction } from '../store/actions/actions'
-import { RootState } from '../store/store'
+import { Post } from '../common/types/post'
 import { changeGroups } from '../store/group-by.service'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { setPosts } from './posts.slice'
 import { Tree } from './Tree'
 import { GroupButton } from './GroupButton'
+import { usePosts } from '../store/store'
+import { getPosts } from '../api/posts'
 
 export const Posts = () => {
   const [group, setGroup] = useState('time')
 
-  const posts: PostsState = useAppSelector((state: RootState) => state.posts)
-  const dispatch = useAppDispatch()
+  const posts: Record<string, Post[]> = usePosts(state => state.posts)
+  const setPosts = usePosts(state => state.setPosts)
 
   const groupBy = (key: string, list: Record<string, Post[]>) => {
     const posts: Record<string, Post[]> = changeGroups(list, key)
-    dispatch(setPosts(posts))
+    setPosts(posts)
   }
   useEffect(() => {
-    dispatch(fetchPostsAction())
-  }, [dispatch])
+    getPosts().then(result => setPosts(result))
+  }, [])
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setGroup(e.target.value)
-    groupBy(e.target.value, posts.list)
+    groupBy(e.target.value, posts)
   }
 
   return (

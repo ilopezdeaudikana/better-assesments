@@ -7,10 +7,6 @@ export interface Post {
   [key: string]: string | number
 }
 
-export interface PostsState {
-  list: Record<string, Post[]>
-}
-
 export enum Groupable {
   Author = 'author',
   Location = 'location',
