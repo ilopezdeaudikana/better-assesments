@@ -10,7 +10,7 @@ export const api = {
       .then((response) => {
         const withDate = response.map((post: Post) => ({
           ...post,
-          date: new Date(parseInt(post.time)).toLocaleDateString('en-GB'),
+          date: new Date(parseInt(post.time) * 1000).toLocaleString('en-GB'),
         }));
         return groupPostsByWeek(withDate);
       });
