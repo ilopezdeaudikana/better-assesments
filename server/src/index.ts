@@ -31,7 +31,7 @@ app.get('/posts', getPosts)
 app.get('/users', getUsers)
 app.get('/partners', getPartners)
 app.get('/articles', getArticles)
-app.post('/article', createArticle)
+app.post('/articles', createArticle)
 
 // catch 404 and forward to error handler
 app.use(function (_, __, next: NextFunction) {

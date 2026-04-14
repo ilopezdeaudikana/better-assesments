@@ -7,8 +7,9 @@ import {
   InputLabel,
 } from '@mui/material'
 
-import { useArticles } from '../../store/store'
 import { createArticle } from '../../services/articles-service'
+import { useQueryClient } from '@tanstack/react-query'
+import { Article } from '../../types/types'
 
 export const NewPost = (props: { userId: number }) => {
   const { userId } = props
@@ -16,7 +17,7 @@ export const NewPost = (props: { userId: number }) => {
   const [body, setBody] = useState('')
   const [visible, setVisible] = useState(false)
 
-  const addNewArticle = useArticles(state => state.setNewArticle)
+  const queryClient = useQueryClient()
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTitle(e.currentTarget.value)
@@ -31,7 +32,13 @@ export const NewPost = (props: { userId: number }) => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     const { id } = await createArticle({ title, body, userId })
-    addNewArticle({ title, body, userId, id: +id })
+    
+    queryClient.setQueryData<Article[]>(['articles'], (oldData) => {
+
+      if (!oldData) return [{ id, title, body, userId }]
+
+      return [...oldData, { id, title, body, userId }]
+    })
   }
 
   const showForm = () => {

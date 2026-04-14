@@ -5,6 +5,7 @@ import { Tree } from './components/tree'
 import { GroupButton } from './components/group-button'
 import { usePosts } from './store/store'
 import { getPosts } from './services/posts-service'
+import { useQuery } from '@tanstack/react-query'
 
 export const Posts = () => {
   const [group, setGroup] = useState('time')
@@ -16,9 +17,17 @@ export const Posts = () => {
     const posts: Record<string, Post[]> = changeGroups(list, key)
     setPosts(posts)
   }
+
+  const query = useQuery({
+    queryKey: ['posts'],
+    queryFn: getPosts,
+    staleTime: 5 * 1000 * 60
+  })
+
   useEffect(() => {
-    getPosts().then(result => setPosts(result))
-  }, [])
+    // Need to be synced with the ui state because "posts" changes are never persisted
+    setPosts(query.data ?? {})
+  }, [query.data])
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setGroup(e.target.value)

@@ -1,23 +1,17 @@
-import { useState, useEffect, SyntheticEvent } from 'react'
+import { useState, SyntheticEvent } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Tabs, Tab } from '@mui/material'
 import { getArticles } from './services/articles-service'
-import { useArticles, useUser } from './store/store'
+import { useUser } from './store/store'
 import { Login } from './components/user-form/user-form'
+import { useQuery } from '@tanstack/react-query'
 
 export const Articles = () => {
   const [value, setValue] = useState(0)
   const navigate = useNavigate()
-  const setArticles = useArticles(state => state.setArticles)
-  const articles = useArticles(state => state.articles)
   const user = useUser(state => state.user)
 
-  useEffect(() => {
-    getArticles().then(results => {
-      setArticles(results)
-    })
-  }, [])
-
+  const query = useQuery({ queryKey: ['articles'], queryFn: getArticles, staleTime: 5 * 1000 * 60 })
 
   const handleChange = (_: SyntheticEvent<Element, Event>, newValue: number) => {
     if (newValue === value) {
@@ -41,7 +35,7 @@ export const Articles = () => {
           <Tab label='Mine' />
           <Tab label='Others' />
         </Tabs>
-        <Outlet context={[articles, user.id]} />
+        <Outlet context={[query.data, user.id]} />
       </div>
     </>
   ) : (
