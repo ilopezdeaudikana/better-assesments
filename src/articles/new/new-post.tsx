@@ -8,8 +8,8 @@ import {
 } from '@mui/material'
 
 import styles from './new-post.module.scss'
-import { createPost } from '../../api/api'
 import { useArticles } from '../../store-articles/store'
+import { createArticle } from '../articles-service'
 
 export const NewPost = (props: { userId: number }) => {
   const { userId } = props
@@ -29,10 +29,10 @@ export const NewPost = (props: { userId: number }) => {
     setBody(e.currentTarget.value)
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
-    const { id } = await createPost({ title, body, userId })
-    addNewArticle({ title, body, userId, id })
+    const { id } = await createArticle({ title, body, userId })
+    addNewArticle({ title, body, userId, id: +id })
   }
 
   const showForm = () => {

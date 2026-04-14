@@ -5,7 +5,7 @@ import { PostCard } from '../card/post-card'
 
 export const MyPosts = () => {
   const [posts, id] = useOutletContext<[posts: ArticleFromApi[], id: number]>()
-  const list = posts.filter((post: ArticleFromApi) => post.userId === id)
+  const list = posts?.filter((post: ArticleFromApi) => post.userId === id)
   return (
     <>
       <NewPost userId={id} />

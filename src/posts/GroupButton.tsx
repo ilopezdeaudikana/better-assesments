@@ -1,11 +1,10 @@
-import { Fragment } from 'react'
 export const GroupButton = (props: {
   by: string
   group: string
   change: Function
 }) => {
   return (
-    <Fragment>
+    <>
       <div>
         <input
           type='radio'
@@ -23,6 +22,6 @@ export const GroupButton = (props: {
           By {props.by}
         </label>
       </div>
-    </Fragment>
+    </>
   )
 }

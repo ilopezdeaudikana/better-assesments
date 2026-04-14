@@ -3,7 +3,7 @@ import { ArticleFromApi, Article } from '../types/models'
 import { mergeUsersAndPosts } from '../merge-users-and-posts'
 import { PostCard } from '../card/post-card'
 import { useOutletContext } from 'react-router-dom'
-import { getUsers } from '../../api/api'
+import { getUsers } from '../users-service'
 import { useUsers } from '../../store-articles/store'
 
 export const OthersPosts = () => {

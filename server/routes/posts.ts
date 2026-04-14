@@ -1,8 +1,7 @@
-var express = require("express");
-var router = express.Router();
+import type { Request, Response } from 'express'
 
-router.get("/", function (req, res, next) {
-  res.send([
+export const getPosts = (req: Request, res: Response) => {
+  res.json([
     {
       id: 1,
       location: "San Francisco",
@@ -50,7 +49,6 @@ router.get("/", function (req, res, next) {
       text:
         "An integrated productivity solution breaks information through barriers and allows workers to collaborate in real time.",
     },
-  ]);
-});
+  ])
+}
 
-module.exports = router;

@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/posts/posts-service.ts"  ]
 }

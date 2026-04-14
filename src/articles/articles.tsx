@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, SyntheticEvent } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Tabs, Tab } from '@mui/material'
-import styles from './posts.module.scss'
-import { getPosts } from '../api/api'
+import { getArticles } from '../articles/articles-service'
 import { useArticles, useUser } from '../store-articles/store'
 import { Login } from '../login/login'
 
@@ -14,13 +13,13 @@ export const Articles = () => {
   const user = useUser(state => state.user)
 
   useEffect(() => {
-    getPosts().then(results => {
+    getArticles().then(results => {
       setArticles(results)
     })
   }, [])
 
 
-  const handleChange = (e: any, newValue: number) => {
+  const handleChange = (_: SyntheticEvent<Element, Event>, newValue: number) => {
     if (newValue === value) {
       return
     }
@@ -31,7 +30,7 @@ export const Articles = () => {
 
   return user && user.id ? (
     <>
-      <div className={styles.postsList}>
+      <div>
         <Tabs
           value={value}
           indicatorColor='primary'
@@ -42,9 +41,7 @@ export const Articles = () => {
           <Tab label='Mine' />
           <Tab label='Others' />
         </Tabs>
-        <div className={styles.listContainer}>
-          <Outlet context={[articles, user.id]} />
-        </div>
+        <Outlet context={[articles, user.id]} />
       </div>
     </>
   ) : (

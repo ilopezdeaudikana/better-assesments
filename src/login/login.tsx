@@ -7,7 +7,7 @@ import {
   InputLabel,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { getUser } from '../api/api'
+import { getUser } from '../articles/users-service'
 
 import { useUser } from '../store-articles/store'
 import { User } from '../articles/types/models'
@@ -19,7 +19,7 @@ export const Login = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.currentTarget.value)
   }
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     const users: User[] = await getUser(email)
     setUser(users[0])

@@ -4,7 +4,7 @@ import { changeGroups } from '../store/group-by.service'
 import { Tree } from './Tree'
 import { GroupButton } from './GroupButton'
 import { usePosts } from '../store/store'
-import { getPosts } from '../api/posts'
+import { getPosts } from './posts-service'
 
 export const Posts = () => {
   const [group, setGroup] = useState('time')
