@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
-import type { User } from '../../src/articles/types/models.js'
+import type { User } from '../../src/articles/types/types.js'
 
 const server = 'https://jsonplaceholder.typicode.com'
 

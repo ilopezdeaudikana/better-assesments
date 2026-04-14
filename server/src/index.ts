@@ -10,6 +10,7 @@ import type { Request, Response, NextFunction } from 'express'
 import { getPosts } from '../routes/posts.js'
 import { getUsers } from '../routes/users.js'
 import { getArticles, createArticle } from '../routes/articles.js'
+import { getPartners } from '../routes/partners.js'
 
 const app = express()
 app.use(logger('dev'))
@@ -28,6 +29,7 @@ app.use(function (err: Error, req: Request, res: Response, _: NextFunction) {
 
 app.get('/posts', getPosts)
 app.get('/users', getUsers)
+app.get('/partners', getPartners)
 app.get('/articles', getArticles)
 app.post('/article', createArticle)
 

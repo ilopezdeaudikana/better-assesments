@@ -4,11 +4,11 @@ import {
   Route,
   NavLink
 } from 'react-router-dom'
-import { Pairs } from './pairs/Pairs'
-import { Posts } from './posts/Posts'
-import { Articles } from './articles/articles'
-import { MyPosts } from './articles/mine/my-posts'
-import { OthersPosts } from './articles/others/others-posts'
+import { Pairs } from './partners/partners.view'
+import { Posts } from './posts/posts.view'
+import { Articles } from './articles/articles.view'
+import { MyPosts } from './articles/components/mine/my-posts'
+import { OthersPosts } from './articles/components/others/others-posts'
 
 function App() {
   return (
