@@ -8,13 +8,14 @@ const ArticleFromApi = z.object({
 })
 
 export type ApiArticle = z.infer<typeof ArticleFromApi>
-export type Article = ApiArticle & { username?: string }
+export type Article = ApiArticle & { userName?: string, userEmail?: string }
 
 export const ArticleApiResponse = z.array(ArticleFromApi)
 
 const UserfromApi = z.object({
   id: z.number(),
-  name: z.string()
+  name: z.string(),
+  email: z.email()
 })
 
 export const UserApiResponse = z.array(UserfromApi)

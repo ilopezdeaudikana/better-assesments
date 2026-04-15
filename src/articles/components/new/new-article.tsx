@@ -11,7 +11,7 @@ import { createArticle } from '../../services/articles-service'
 import { useQueryClient } from '@tanstack/react-query'
 import { Article } from '../../types/types'
 
-export const NewPost = (props: { userId: number }) => {
+export const NewArticle = (props: { userId: number }) => {
   const { userId } = props
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
@@ -37,8 +37,9 @@ export const NewPost = (props: { userId: number }) => {
 
       if (!oldData) return [{ id, title, body, userId }]
 
-      return [...oldData, { id, title, body, userId }]
+      return [{ id, title, body, userId }, ...oldData]
     })
+    setVisible(false)
   }
 
   const showForm = () => {
@@ -49,35 +50,37 @@ export const NewPost = (props: { userId: number }) => {
     <>
       <div>
         <Button variant='outlined' color='primary' onClick={() => showForm()}>
-          Create new Post
+          Create new Article
         </Button>
       </div>
       {visible && (
         <form data-testid='form' onSubmit={handleSubmit}>
-          <FormControl>
-            <InputLabel htmlFor='title'>Title</InputLabel>
-            <Input data-testid='title' id='title' onChange={handleTitleChange} />
-          </FormControl>
-          <FormControl>
-            <TextareaAutosize
-              id='body'
-              data-testid='body'
-              aria-label='Post body textarea'
-              placeholder='Post body'
-              onChange={handleBodyChange}
-              minRows={3}
-            />
-          </FormControl>
-          <Button
-            role='button'
-            data-testid='submit'
-            disabled={!title && !body}
-            variant='outlined'
-            color='primary'
-            type='submit'
-          >
-            Save Post
-          </Button>
+          <div className='flex flex-col gap-4'>
+            <FormControl>
+              <InputLabel htmlFor='title'>Title</InputLabel>
+              <Input data-testid='title' id='title' onChange={handleTitleChange} />
+            </FormControl>
+            <FormControl>
+              <TextareaAutosize
+                id='body'
+                data-testid='body'
+                aria-label='Post body textarea'
+                placeholder='Post body'
+                onChange={handleBodyChange}
+                minRows={3}
+              />
+            </FormControl>
+            <Button
+              role='button'
+              data-testid='submit'
+              disabled={!title && !body}
+              variant='outlined'
+              color='primary'
+              type='submit'
+            >
+              Save Article
+            </Button>
+          </div>
         </form>
       )}
     </>

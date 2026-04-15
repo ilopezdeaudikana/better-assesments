@@ -11,6 +11,6 @@ export const mergeUsersAndPosts = (
   )
   return othersPosts.map((post) => {
     const user = users.find((user: User) => user.id === post.userId)
-    return { ...post, username: user ? user.name : '' }
+    return { ...post, userName: user ? user.name : '', userEmail: user ? user.email : '' }
   })
 }

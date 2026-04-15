@@ -1,17 +1,15 @@
-import { useState, SyntheticEvent } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
-import { Tabs, Tab } from '@mui/material'
-import { getArticles } from './services/articles-service'
+import { useState, SyntheticEvent, useEffect } from 'react'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
+import { Tabs, Tab, Button } from '@mui/material'
 import { useUser } from './store/store'
 import { Login } from './components/user-form/user-form'
-import { useQuery } from '@tanstack/react-query'
 
 export const Articles = () => {
   const [value, setValue] = useState(0)
+  const [toggleUser, setToggleUser] = useState(false)
   const navigate = useNavigate()
   const user = useUser(state => state.user)
-
-  const query = useQuery({ queryKey: ['articles'], queryFn: getArticles, staleTime: 5 * 1000 * 60 })
+  const location = useLocation()
 
   const handleChange = (_: SyntheticEvent<Element, Event>, newValue: number) => {
     if (newValue === value) {
@@ -22,26 +20,38 @@ export const Articles = () => {
     navigate(`/articles/${routes[newValue]}`)
   }
 
-  return user && user.id ? (
+  const handleUserChanged = () => {
+    setValue(0)
+    setToggleUser(false)
+  }
+
+  useEffect(() => {
+    if (location.pathname === '/articles' && user.id) {
+      navigate('/articles/mine')
+    }
+  }, [location.pathname])
+
+  return user && user.id && !toggleUser ? (
     <>
-      <div>
+      <div className="w-[60rem] flex flex-col p-3 mx-auto my-2 gap-2">
+        <Button className="w-[14rem]" variant='outlined'onClick={() => setToggleUser(true)}>Load another author</Button>
         <Tabs
           value={value}
           indicatorColor='primary'
           textColor='primary'
           onChange={handleChange}
-          aria-label='Posts navigation'
+          aria-label='Articles navigation'
         >
-          <Tab label='Mine' />
-          <Tab label='Others' />
+          <Tab label={user.name} />
+          <Tab label='Rest' />
         </Tabs>
-        <Outlet context={[query.data, user.id]} />
+        <Outlet />
       </div>
     </>
   ) : (
     <>
-      <div>Load user articles</div>
-      <Login />
+      <p className="mb-4">Load author's articles</p>
+      <Login onUserChanged={handleUserChanged}/>
     </>
   )
 }

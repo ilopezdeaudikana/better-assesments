@@ -12,7 +12,7 @@ import { getUser } from '../../services/users-service'
 import { useUser } from '../../store/store'
 import { User } from '../../types/types'
 
-export const Login = () => {
+export const Login = ({ onUserChanged }: { onUserChanged: () => void }) => {
   const [email, setEmail] = useState('')
   const navigate = useNavigate()
   const setUser = useUser(state => state.setUser)
@@ -24,6 +24,7 @@ export const Login = () => {
     const users: User[] = await getUser(email)
     setUser(users[0])
     navigate('/articles/mine')
+    onUserChanged()
   }
 
   return (

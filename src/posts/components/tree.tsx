@@ -1,10 +1,12 @@
+import { Card } from '@mui/material'
 import { usePosts } from '../store/store'
+import { DomInput } from '../types/dom-payload'
 
 export const Tree = (props: { group: string }) => {
   const posts = usePosts(state => state.posts)
   const setInputValue = usePosts(state => state.setInputValue)
 
-  const onSubmit = (key: string, input: string, id: number, value: string) => {
+  const onSubmit = (key: string, input: DomInput, id: number, value: string) => {
     setInputValue({
       key,
       input,
@@ -21,36 +23,37 @@ export const Tree = (props: { group: string }) => {
           {posts[key].map((item) => (
             <li
               key={item.id}
-              className='w-[30rem] flex flex-col p-3 rounded-xl bg-gray-200 mx-auto my-2'
             >
-              <p className='text-left'>{item.date}</p>
-              <div className='my-2'>
-                <p className='text-left'>{item.text}</p>
-              </div>
-              <div className='flex flex-row justify-between my-1'>
-                <label htmlFor='author'>Author</label>
-                <input
-                  className='p-1 rounded-sm'
-                  name='author'
-                  id='author'
-                  defaultValue={item.author}
-                  onBlur={(e) =>
-                    onSubmit(key, 'author', item.id, e.target.value)
-                  }
-                />
-              </div>
-              <div className='flex flex-row justify-between'>
-                <label htmlFor='location'>Location</label>
-                <input
-                  className='p-1 rounded-sm'
-                  name='location'
-                  id='location'
-                  defaultValue={item.location}
-                  onBlur={(e) =>
-                    onSubmit(key, 'location', item.id, e.target.value)
-                  }
-                />
-              </div>
+              <Card className='flex flex-col p-3 my-3 text-left'>
+                <p>{item.time}</p>
+                <div className='my-2'>
+                  <p>{item.text}</p>
+                </div>
+                <div className='flex flex-row gap-4 my-1'>
+                  <label htmlFor='author' className='pt-2'>Author</label>
+                  <input
+                    className='p-1 rounded-sm border-2 border-indigo-500/25'
+                    name='author'
+                    id='author'
+                    defaultValue={item.author}
+                    onBlur={(e) =>
+                      onSubmit(key, 'author', item.id, e.target.value)
+                    }
+                  />
+                </div>
+                <div className='flex flex-row gap-4'>
+                  <label htmlFor='location' className='pt-2'>Location</label>
+                  <input
+                    className='p-1 rounded-sm border-2 border-indigo-500/25'
+                    name='location'
+                    id='location'
+                    defaultValue={item.location}
+                    onBlur={(e) =>
+                      onSubmit(key, 'location', item.id, e.target.value)
+                    }
+                  />
+                </div>
+              </Card>
             </li>
           ))}
         </ul>

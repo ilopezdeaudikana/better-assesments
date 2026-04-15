@@ -8,7 +8,7 @@ import {
 import { Pairs } from './partners/partners.view'
 import { Posts } from './posts/posts.view'
 import { Articles } from './articles/articles.view'
-import { MyPosts } from './articles/components/mine/my-posts'
+import { MyPosts } from './articles/components/mine/my-articles'
 import { OthersPosts } from './articles/components/others/others-posts'
 import {
   QueryClient,
@@ -16,8 +16,14 @@ import {
 } from '@tanstack/react-query'
 
 function App() {
-  
+
   const queryClient = new QueryClient()
+
+  const activeClass = 'bg-blue-500 text-white'
+
+  const defaultClass = 'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+
+  const setLinkClass = (isActive: boolean) => `${defaultClass} ${isActive ? activeClass : ''}`.trim()
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -25,32 +31,18 @@ function App() {
         <div data-testid='App'>
           <header>
             <nav>
-              <ul className='inline-flex rounded-lg my-3 p-1 bg-gray-500 bg-opacity-30 mx-auto'>
+              <ul className='inline-flex rounded-lg my-3 p-1 mx-auto'>
                 <li className='mx-1'>
                   <NavLink
-                    className={({ isActive }) =>
-                      [
-                        'group flex items-center px-2 py-2 text-base font-medium rounded-md',
-                        isActive ? 'bg-gray-900 text-white' : null
-                      ]
-                        .filter(Boolean)
-                        .join(' ')
-                    }
+                    className={({ isActive }) => setLinkClass(isActive)}
                     to='/'
                   >
-                    Pairs
+                    Partners
                   </NavLink>
                 </li>
                 <li className='mx-1'>
                   <NavLink
-                    className={({ isActive }) =>
-                      [
-                        'group flex items-center px-2 py-2 text-base font-medium rounded-md',
-                        isActive ? 'bg-gray-900 text-white' : null
-                      ]
-                        .filter(Boolean)
-                        .join(' ')
-                    }
+                    className={({ isActive }) => setLinkClass(isActive)}
                     to='/posts'
                   >
                     Posts
@@ -58,14 +50,7 @@ function App() {
                 </li>
                 <li className='mx-1'>
                   <NavLink
-                    className={({ isActive }) =>
-                      [
-                        'group flex items-center px-2 py-2 text-base font-medium rounded-md',
-                        isActive ? 'bg-gray-900 text-white' : null
-                      ]
-                        .filter(Boolean)
-                        .join(' ')
-                    }
+                    className={({ isActive }) => setLinkClass(isActive)}
                     to='/articles'
                   >
                     Articles
